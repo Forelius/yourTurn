@@ -4,6 +4,9 @@
 
 Enhance your Foundry VTT sessions with visual turn notifications. This module displays a customizable banner when combat turns change, improving gameplay awareness for all players.
 
+## Fantastic Depths Support
+This version supports Fantastic Depths combat tracker, adding better support for FaDe's various initiative systems.
+
 ## Features
 
 - **Visual Turn Indicator**: Clear display during combat transitions
