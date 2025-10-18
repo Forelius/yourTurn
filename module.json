@@ -1,8 +1,8 @@
 {
    "id": "your-turn",
-   "title": "Your Turn!",
+   "title": "Your Turn! (Fantastic Depths)",
    "description": "Displays a banner when a combatant's turn begins.'",
-   "version": "1.3.3",
+   "version": "1.3.4",
    "compatibility": {
       "minimum": "13",
       "verified": "13"
