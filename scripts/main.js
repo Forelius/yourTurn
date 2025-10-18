@@ -17,6 +17,7 @@ export default class TurnSubscriber {
     static expectedNext;
     static lastHiddenCombatId = null;
     static lastHiddenRound = null;
+    
     // Static method that starts the turn tracking
     static begin() {
         Hooks.on("ready", () => {
@@ -28,9 +29,14 @@ export default class TurnSubscriber {
                 Hooks.on("updateCombat", (combat, update, options, userId) => {
                     this._onUpdateCombat(combat, update, options, userId);
                 });
+                // Hook that triggers after initiative is rolled
+                Hooks.on("afterRollInitiative", (combat) => {
+                    this.#onCombatUpdated(combat);
+                });
             });
         });
     }
+
     // Static method that waits for the GM to be available
     static async waitForGM() {
         const gm = game.users.find((u) => u.isGM && u.active);
@@ -49,8 +55,29 @@ export default class TurnSubscriber {
             });
         }
     }
+
+    // Static method to check if all combatants have rolled initiative
+    static allInitiativesRolled(combat) {
+        if (!combat || !combat.turns || combat.turns.length === 0) {
+            return false;
+        }
+        
+        // Check if all non-defeated combatants have initiative values
+        return combat.turns.every(combatant => {
+            // Skip defeated combatants as they don't need initiative
+            if (combatant.defeated) {
+                return true;
+            }
+            // Check if initiative has been rolled (not null, undefined, or empty string)
+            return combatant.initiative !== null && 
+                   combatant.initiative !== undefined && 
+                   combatant.initiative !== "";
+        });
+    }
+
     // Static method that handles the updateCombat hook
     static _onUpdateCombat(combat, update, options, userId) {
+        console.debug("updateCombat", combat, update, options, userId);
         // Reset hidden tracking if a new combat has started
         if (this.lastHiddenCombatId !== combat.id) {
             this.lastHiddenCombatId = combat.id;
@@ -58,10 +85,22 @@ export default class TurnSubscriber {
         }
         // Only proceed if the turn or round has changed
         if (!update["turn"] && !update["round"]) return;
-        // Only proceed if combat is started
-        if (!combat.started) return;
         // Avoid processing the same combatant twice
         if (combat.combatant === this.lastCombatant) return;
+
+        // Call the main turn change handler
+        this.#onCombatUpdated(combat);
+    }
+
+    // Main method that handles turn changes and displays the turn banner
+    static #onCombatUpdated(combat) {
+        // Only proceed if combat is started
+        if (!combat.started) return;
+        
+        // Check if we should wait for all initiatives to be rolled
+        if (Settings.getWaitForInitiative() && !this.allInitiativesRolled(combat)) {
+            return;
+        }        
         // Update lastCombatant and store expectedNext for later comparison
         this.lastCombatant = combat.combatant;
         this.expectedNext = combat.nextCombatant;

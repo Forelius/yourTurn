@@ -32,6 +32,14 @@ const settings = {
         type: Boolean,
         default: false
     },
+    waitForInitiative: {
+        name: 'Wait for Initiative',
+        hint: 'Wait for all initiatives before showing combatant\'s turn banner',
+        scope: 'world',
+        config: true,
+        type: Boolean,
+        default: true
+    },
 };
 export class Settings {
     static getStartCounterAtOne() {
@@ -45,6 +53,9 @@ export class Settings {
     }
     static getHideNextUp() {
         return game.settings.get(modName, 'hideNextUp');
+    }
+    static getWaitForInitiative() {
+        return game.settings.get(modName, 'waitForInitiative');
     }
     static registerSettings() {
         for (const [name, setting] of Object.entries(settings)) {

@@ -11,9 +11,12 @@
     {
       "name": "Autmor"
     },
-    {
+   {
       "name": "EndlessFractal"
-    }
+   },
+   {
+      "name": "Forelius"
+   }
   ],
   "esmodules": [
     "/scripts/main.js"
