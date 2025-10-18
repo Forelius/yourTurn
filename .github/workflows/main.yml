@@ -30,7 +30,7 @@ jobs:
       run: |
         echo "## Your Turn Module Release" > release_notes.txt
         echo "" >> release_notes.txt
-        echo "This is a release version of Your Turn module." >> release_notes.txt
+        echo ${{ github.event.release.body }} >> release_notes.txt
         echo "To install manually, use this URL:" >> release_notes.txt
         echo "`https://github.com/Forelius/yourTurn/releases/download/latest/module.json`" >> release_notes.txt
 
