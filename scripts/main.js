@@ -77,7 +77,7 @@ export default class TurnSubscriber {
 
     // Static method that handles the updateCombat hook
     static _onUpdateCombat(combat, update, options, userId) {
-        console.debug("updateCombat", combat, update, options, userId);
+        //console.debug("updateCombat", combat, update, options, userId);
         // Reset hidden tracking if a new combat has started
         if (this.lastHiddenCombatId !== combat.id) {
             this.lastHiddenCombatId = combat.id;
