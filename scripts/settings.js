@@ -18,7 +18,7 @@ const settings = {
     },
     hideNextUpHidden: {
         name: 'Hide Banner for Hidden Combatants',
-        hint: 'Toogle to hide all turn details for hidden combatants. When disabled, shows a generic \'Something happens\' message once per round for hidden combatants. Default is True.',
+        hint: 'Toggle to hide all turn details for hidden combatants. When disabled, shows a generic \'Something happens\' message once per round for hidden combatants. Default is True.',
         scope: 'world',
         config: true,
         type: Boolean,
@@ -32,6 +32,15 @@ const settings = {
         type: Boolean,
         default: false
     },
+    imgSize: {
+        name: 'Turn Banner Image Size (px)',
+        hint: 'Image Size of the actor/token image. After applying don\'t forget to reload the page (F5).',
+        scope: 'client',
+        config: true,
+        type: Number,
+        range: { min: 280, max: 400, step: 10 },
+        default: 380
+    }
     waitForInitiative: {
         name: 'Wait for Initiative',
         hint: 'Wait for all initiatives before showing combatant\'s turn banner',
@@ -53,6 +62,9 @@ export class Settings {
     }
     static getHideNextUp() {
         return game.settings.get(modName, 'hideNextUp');
+    }
+    static getImgSize() {
+        return game.settings.get(modName, 'imgSize');
     }
     static getWaitForInitiative() {
         return game.settings.get(modName, 'waitForInitiative');
